@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .image-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .image-container img {
+      width: 20%; /* 每张图片占据容器宽度的 20% */
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="image-container">
+    <img src="image1.jpg" alt="Image 1">
+    <img src="image2.jpg" alt="Image 2">
+    <img src="image3.jpg" alt="Image 3">
+    <img src="image4.jpg" alt="Image 4">
+    <img src="image5.jpg" alt="Image 5">
+  </div>
+
+  <script>
+    // 获取图片容器和所有图片元素
+    const imageContainer = document.querySelector('.image-container');
+    const images = Array.from(imageContainer.getElementsByTagName('img'));
+
+    // 获取每张图片的宽度
+    const imageWidth = images[0].offsetWidth;
+
+    // 设置滚动速度和初始位置
+    const scrollSpeed = 1; // 滚动速度，根据需要调整
+    let scrollPosition = 0;
+
+    // 开始滚动
+    function scrollImages() {
+      scrollPosition -= scrollSpeed;
+      imageContainer.style.transform = `translateX(${scrollPosition}px)`;
+
+      // 当滚动超过一张图片的宽度时，将第一张图片追加到末尾，并重置滚动位置
+      if (scrollPosition <= -imageWidth) {
+        scrollPosition += imageWidth;
+        imageContainer.appendChild(images[0]);
+        images.push(images.shift());
+      }
+
+      // 循环调用滚动函数
+      requestAnimationFrame(scrollImages);
+    }
+
+    // 页面加载后开始滚动
+    window.addEventListener('load', scrollImages);
+  </script>
+</body>
+</html>
